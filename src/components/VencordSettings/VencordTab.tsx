@@ -19,6 +19,7 @@
 import { openNotificationLogModal } from "@api/Notifications/notificationLog";
 import { useSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
+import { i18n } from "@api/i18n";
 import DonateButton from "@components/DonateButton";
 import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { openPluginModal } from "@components/PluginSettings/PluginModal";
@@ -74,48 +75,48 @@ function VencordSettings() {
         [
             {
                 key: "useQuickCss",
-                title: "Enable Custom CSS",
-                note: "Loads your Custom CSS"
+                title: i18n("SETTINGS.MAIN_SETTINGS.ENABLE_CUSTOM_CSS"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.ENABLE_CUSTOM_CSS_NOTE")
             },
             !IS_WEB && {
                 key: "enableReactDevtools",
-                title: "Enable React Developer Tools",
-                note: "Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.ENABLE_REACT_DEVTOOLS"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.ENABLE_REACT_DEVTOOLS_NOTE")
             },
             !IS_WEB && (!IS_DISCORD_DESKTOP || !isWindows ? {
                 key: "frameless",
-                title: "Disable the window frame",
-                note: "Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.WINDOW_FRAME.DISABLE_FRAME"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.WINDOW_FRAME_NOTE")
             } : {
                 key: "winNativeTitleBar",
-                title: "Use Windows' native title bar instead of Discord's custom one",
-                note: "Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.WINDOW_FRAME.NATIVE_TITLEBAR"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.WINDOW_FRAME_NOTE")
             }),
             !IS_WEB && {
                 key: "transparent",
-                title: "Enable window transparency.",
-                note: "You need a theme that supports transparency or this will do nothing. WILL STOP THE WINDOW FROM BEING RESIZABLE!! Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.TRANSPARENT_WINDOW"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.TRANSPARENT_WINDOW_NOTE")
             },
             !IS_WEB && isWindows && {
                 key: "winCtrlQ",
-                title: "Register Ctrl+Q as shortcut to close Discord (Alternative to Alt+F4)",
-                note: "Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.CTRL_Q"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.CTRL_Q_NOTE")
             },
             IS_DISCORD_DESKTOP && {
                 key: "disableMinSize",
-                title: "Disable minimum window size",
-                note: "Requires a full restart"
+                title: i18n("SETTINGS.MAIN_SETTINGS.DISABLE_MIN_SIZE"),
+                note: i18n("SETTINGS.MAIN_SETTINGS.DISABLE_MIN_SIZE_NOTE")
             },
         ];
 
     return (
-        <SettingsTab title="Vencord Settings">
+        <SettingsTab title={i18n("SETTINGS.VENCORD_SETTINGS")}>
             {isDonor(user?.id)
                 ? (
                     <SpecialCard
-                        title="Donations"
-                        subtitle="Thank you for donating!"
-                        description="You can manage your perks at any time by messaging @vending.machine."
+                        title={i18n("SETTINGS.DONATIONS.TITLE")}
+                        subtitle={i18n("SETTINGS.DONATIONS.SUBTITLE")}
+                        description={i18n("SETTINGS.DONATIONS.DESCRIPTION")}
                         cardImage={VENNIE_DONATOR_IMAGE}
                         backgroundImage={DONOR_BACKGROUND_IMAGE}
                         backgroundColor="#ED87A9"
@@ -125,8 +126,8 @@ function VencordSettings() {
                 )
                 : (
                     <SpecialCard
-                        title="Support the Project"
-                        description="Please consider supporting the development of Vencord by donating!"
+                        title={i18n("SETTINGS.DONATIONS.SUPPORT_PROJECT")}
+                        description={i18n("SETTINGS.DONATIONS.SUPPORT_DESCRIPTION")}
                         cardImage={donateImage}
                         backgroundImage={DONOR_BACKGROUND_IMAGE}
                         backgroundColor="#c3a3ce"
@@ -137,46 +138,46 @@ function VencordSettings() {
             }
             {isPluginDev(user?.id) && (
                 <SpecialCard
-                    title="Contributions"
-                    subtitle="Thank you for contributing!"
-                    description="Since you've contributed to Vencord you now have a cool new badge!"
+                    title={i18n("SETTINGS.CONTRIBUTIONS.TITLE")}
+                    subtitle={i18n("SETTINGS.CONTRIBUTIONS.SUBTITLE")}
+                    description={i18n("SETTINGS.CONTRIBUTIONS.DESCRIPTION")}
                     cardImage={COZY_CONTRIB_IMAGE}
                     backgroundImage={CONTRIB_BACKGROUND_IMAGE}
                     backgroundColor="#EDCC87"
-                    buttonTitle="See what you've contributed to"
+                    buttonTitle={i18n("SETTINGS.CONTRIBUTIONS.BUTTON")}
                     buttonOnClick={() => openContributorModal(user)}
                 />
             )}
 
-            <Forms.FormSection title="Quick Actions">
+            <Forms.FormSection title={i18n("SETTINGS.QUICK_ACTIONS.TITLE")}>
                 <QuickActionCard>
                     <QuickAction
                         Icon={LogIcon}
-                        text="Notification Log"
+                        text={i18n("SETTINGS.QUICK_ACTIONS.NOTIFICATION_LOG")}
                         action={openNotificationLogModal}
                     />
                     <QuickAction
                         Icon={PaintbrushIcon}
-                        text="Edit QuickCSS"
+                        text={i18n("SETTINGS.QUICK_ACTIONS.EDIT_QUICKCSS")}
                         action={() => VencordNative.quickCss.openEditor()}
                     />
                     {!IS_WEB && (
                         <QuickAction
                             Icon={RestartIcon}
-                            text="Relaunch Discord"
+                            text={i18n("SETTINGS.QUICK_ACTIONS.RELAUNCH_DISCORD")}
                             action={relaunch}
                         />
                     )}
                     {!IS_WEB && (
                         <QuickAction
                             Icon={FolderIcon}
-                            text="Open Settings Folder"
+                            text={i18n("SETTINGS.QUICK_ACTIONS.OPEN_SETTINGS_FOLDER")}
                             action={() => showItemInFolder(settingsDir)}
                         />
                     )}
                     <QuickAction
                         Icon={GithubIcon}
-                        text="View Source Code"
+                        text={i18n("SETTINGS.QUICK_ACTIONS.VIEW_SOURCE_CODE")}
                         action={() => VencordNative.native.openExternal("https://github.com/" + gitRemote)}
                     />
                 </QuickActionCard>
@@ -184,9 +185,9 @@ function VencordSettings() {
 
             <Forms.FormDivider />
 
-            <Forms.FormSection className={Margins.top16} title="Settings" tag="h5">
+            <Forms.FormSection className={Margins.top16} title={i18n("SETTINGS.MAIN_SETTINGS.TITLE")} tag="h5">
                 <Forms.FormText className={Margins.bottom20} style={{ color: "var(--text-muted)" }}>
-                    Hint: You can change the position of this settings section in the
+                    {i18n("SETTINGS.MAIN_SETTINGS.HINT")}
                     {" "}<Button
                         look={Button.Looks.BLANK}
                         style={{ color: "var(--text-link)", display: "inline-block" }}
@@ -195,6 +196,22 @@ function VencordSettings() {
                         settings of the Settings plugin
                     </Button>!
                 </Forms.FormText>
+
+                {/* Language Selector */}
+                <Forms.FormTitle tag="h5">{i18n("SETTINGS.LANGUAGE")}</Forms.FormTitle>
+                <Forms.FormText className={Margins.bottom8}>
+                    {i18n("SETTINGS.LANGUAGE_DESCRIPTION")}
+                </Forms.FormText>
+                <Select
+                    options={[
+                        { label: "English", value: "en-US" },
+                        { label: "繁體中文", value: "zh-TW" }
+                    ]}
+                    closeOnSelect={true}
+                    select={v => { settings.language = v; }}
+                    isSelected={v => v === settings.language}
+                    serialize={identity}
+                />
 
                 {Switches.map(s => s && (
                     <Switch
@@ -273,13 +290,13 @@ function VencordSettings() {
                     serialize={identity} />
             </>}
 
-            <Forms.FormSection className={Margins.top16} title="Vencord Notifications" tag="h5">
+            <Forms.FormSection className={Margins.top16} title={i18n("SETTINGS.NOTIFICATION.TITLE")} tag="h5">
                 <Flex>
                     <Button onClick={openNotificationSettingsModal}>
-                        Notification Settings
+                        {i18n("SETTINGS.NOTIFICATION.TITLE")}
                     </Button>
                     <Button onClick={openNotificationLogModal}>
-                        View Notification Log
+                        {i18n("SETTINGS.NOTIFICATION.VIEW_LOG")}
                     </Button>
                 </Flex>
             </Forms.FormSection>
@@ -289,11 +306,12 @@ function VencordSettings() {
 
 function DonateButtonComponent() {
     return (
-        <DonateButton
-            look={Button.Looks.FILLED}
-            color={Button.Colors.WHITE}
-            style={{ marginTop: "1em" }}
-        />
+        <div style={{ marginTop: "1em" }}>
+            <DonateButton
+                look={Button.Looks.FILLED}
+                color={Button.Colors.WHITE}
+            />
+        </div>
     );
 }
 

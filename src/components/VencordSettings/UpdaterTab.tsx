@@ -27,6 +27,7 @@ import { relaunch } from "@utils/native";
 import { useAwaiter } from "@utils/react";
 import { changes, checkForUpdates, getRepo, isNewer, update, updateError, UpdateLogger } from "@utils/updater";
 import { Alerts, Button, Card, Forms, Parser, React, Switch, Toasts } from "@webpack/common";
+import { i18n } from "@api/i18n";
 
 import gitHash from "~git-hash";
 
@@ -113,14 +114,14 @@ function Updatable(props: CommonProps) {
         <>
             {!updates && updateError ? (
                 <>
-                    <Forms.FormText>Failed to check updates. Check the console for more info</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.UPDATER.FAILED_CHECK")}</Forms.FormText>
                     <ErrorCard style={{ padding: "1em" }}>
-                        <p>{updateError.stderr || updateError.stdout || "An unknown error occurred"}</p>
+                        <p>{updateError.stderr || updateError.stdout || i18n("SETTINGS.UPDATER.UNKNOWN_ERROR")}</p>
                     </ErrorCard>
                 </>
             ) : (
                 <Forms.FormText className={Margins.bottom8}>
-                    {isOutdated ? (updates.length === 1 ? "There is 1 Update" : `There are ${updates.length} Updates`) : "Up to Date!"}
+                    {isOutdated ? (updates.length === 1 ? i18n("SETTINGS.UPDATER.UPDATE_AVAILABLE") : i18n("SETTINGS.UPDATER.UPDATES_AVAILABLE", { count: updates.length })) : i18n("SETTINGS.UPDATER.UP_TO_DATE")}
                 </Forms.FormText>
             )}
 
@@ -135,10 +136,10 @@ function Updatable(props: CommonProps) {
                             setUpdates([]);
                             await new Promise<void>(r => {
                                 Alerts.show({
-                                    title: "Update Success!",
-                                    body: "Successfully updated. Restart now to apply the changes?",
-                                    confirmText: "Restart",
-                                    cancelText: "Not now!",
+                                    title: i18n("SETTINGS.UPDATER.UPDATE_SUCCESS"),
+                                    body: i18n("SETTINGS.UPDATER.RESTART_PROMPT"),
+                                    confirmText: i18n("SETTINGS.UPDATER.RESTART"),
+                                    cancelText: i18n("SETTINGS.UPDATER.LATER"),
                                     onConfirm() {
                                         relaunch();
                                         r();
@@ -149,7 +150,7 @@ function Updatable(props: CommonProps) {
                         }
                     })}
                 >
-                    Update Now
+                    {i18n("SETTINGS.UPDATER.UPDATE_NOW")}
                 </Button>}
                 <Button
                     size={Button.Sizes.SMALL}
@@ -161,7 +162,7 @@ function Updatable(props: CommonProps) {
                         } else {
                             setUpdates([]);
                             Toasts.show({
-                                message: "No updates found!",
+                                message: i18n("SETTINGS.UPDATER.NO_UPDATES"),
                                 id: Toasts.genId(),
                                 type: Toasts.Type.MESSAGE,
                                 options: {
@@ -171,7 +172,7 @@ function Updatable(props: CommonProps) {
                         }
                     })}
                 >
-                    Check for Updates
+                    {i18n("SETTINGS.UPDATER.CHECK_UPDATES")}
                 </Button>
             </Flex>
         </>
@@ -182,7 +183,7 @@ function Newer(props: CommonProps) {
     return (
         <>
             <Forms.FormText className={Margins.bottom8}>
-                Your local copy has more recent commits. Please stash or reset them.
+                {i18n("SETTINGS.UPDATER.NEWER_LOCAL")}
             </Forms.FormText>
             <Changes {...props} updates={changes} />
         </>
@@ -192,7 +193,7 @@ function Newer(props: CommonProps) {
 function Updater() {
     const settings = useSettings(["autoUpdate", "autoUpdateNotification"]);
 
-    const [repo, err, repoPending] = useAwaiter(getRepo, { fallbackValue: "Loading..." });
+    const [repo, err, repoPending] = useAwaiter(getRepo, { fallbackValue: i18n("SETTINGS.UPDATER.LOADING") });
 
     React.useEffect(() => {
         if (err)
@@ -205,31 +206,31 @@ function Updater() {
     };
 
     return (
-        <SettingsTab title="Vencord Updater">
-            <Forms.FormTitle tag="h5">Updater Settings</Forms.FormTitle>
+        <SettingsTab title={i18n("SETTINGS.UPDATER.TITLE")}>
+            <Forms.FormTitle tag="h5">{i18n("SETTINGS.UPDATER.UPDATER_SETTINGS")}</Forms.FormTitle>
             <Switch
                 value={settings.autoUpdate}
                 onChange={(v: boolean) => settings.autoUpdate = v}
-                note="Automatically update Vencord without confirmation prompt"
+                note={i18n("SETTINGS.UPDATER.AUTO_UPDATE_NOTE")}
             >
-                Automatically update
+                {i18n("SETTINGS.UPDATER.AUTO_UPDATE")}
             </Switch>
             <Switch
                 value={settings.autoUpdateNotification}
                 onChange={(v: boolean) => settings.autoUpdateNotification = v}
-                note="Shows a notification when Vencord automatically updates"
+                note={i18n("SETTINGS.UPDATER.AUTO_UPDATE_NOTIFICATION_NOTE")}
                 disabled={!settings.autoUpdate}
             >
-                Get notified when an automatic update completes
+                {i18n("SETTINGS.UPDATER.AUTO_UPDATE_NOTIFICATION")}
             </Switch>
 
-            <Forms.FormTitle tag="h5">Repo</Forms.FormTitle>
+            <Forms.FormTitle tag="h5">{i18n("SETTINGS.UPDATER.REPO")}</Forms.FormTitle>
 
             <Forms.FormText className="vc-text-selectable">
                 {repoPending
                     ? repo
                     : err
-                        ? "Failed to retrieve - check console"
+                        ? i18n("SETTINGS.UPDATER.FAILED_RETRIEVE")
                         : (
                             <Link href={repo}>
                                 {repo.split("/").slice(-2).join("/")}
@@ -241,17 +242,17 @@ function Updater() {
 
             <Forms.FormDivider className={Margins.top8 + " " + Margins.bottom8} />
 
-            <Forms.FormTitle tag="h5">Updates</Forms.FormTitle>
+            <Forms.FormTitle tag="h5">{i18n("SETTINGS.UPDATER.UPDATES")}</Forms.FormTitle>
 
             {isNewer ? <Newer {...commonProps} /> : <Updatable {...commonProps} />}
         </SettingsTab>
     );
 }
 
-export default IS_UPDATER_DISABLED ? null : wrapTab(Updater, "Updater");
+export default IS_UPDATER_DISABLED ? null : wrapTab(Updater, i18n("SETTINGS.UPDATER.TITLE"));
 
 export const openUpdaterModal = IS_UPDATER_DISABLED ? null : function () {
-    const UpdaterTab = wrapTab(Updater, "Updater");
+    const UpdaterTab = wrapTab(Updater, i18n("SETTINGS.UPDATER.TITLE"));
 
     try {
         openModal(wrapTab((modalProps: ModalProps) => (

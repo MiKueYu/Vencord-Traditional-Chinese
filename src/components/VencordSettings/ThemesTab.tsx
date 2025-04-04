@@ -30,6 +30,7 @@ import { useAwaiter } from "@utils/react";
 import { findLazy } from "@webpack";
 import { Card, Forms, React, showToast, TabBar, TextArea, useEffect, useRef, useState } from "@webpack/common";
 import type { ComponentType, Ref, SyntheticEvent } from "react";
+import { i18n } from "@api/i18n";
 
 import Plugins from "~plugins";
 
@@ -53,16 +54,16 @@ function Validator({ link }: { link: string; }) {
         if (res.status > 300) throw `${res.status} ${res.statusText}`;
         const contentType = res.headers.get("Content-Type");
         if (!contentType?.startsWith("text/css") && !contentType?.startsWith("text/plain"))
-            throw "Not a CSS file. Remember to use the raw link!";
+            throw i18n("SETTINGS.THEMES.NOT_CSS_FILE");
 
         return "Okay!";
     }));
 
     const text = pending
-        ? "Checking..."
+        ? i18n("SETTINGS.THEMES.CHECKING")
         : err
-            ? `Error: ${err instanceof Error ? err.message : String(err)}`
-            : "Valid!";
+            ? `${i18n("SETTINGS.THEMES.ERROR")}: ${err instanceof Error ? err.message : String(err)}`
+            : i18n("SETTINGS.THEMES.VALID");
 
     return <Forms.FormText style={{
         color: pending ? "var(--text-muted)" : err ? "var(--text-danger)" : "var(--text-positive)"
@@ -74,8 +75,8 @@ function Validators({ themeLinks }: { themeLinks: string[]; }) {
 
     return (
         <>
-            <Forms.FormTitle className={Margins.top20} tag="h5">Validator</Forms.FormTitle>
-            <Forms.FormText>This section will tell you whether your themes can successfully be loaded</Forms.FormText>
+            <Forms.FormTitle className={Margins.top20} tag="h5">{i18n("SETTINGS.THEMES.VALIDATOR")}</Forms.FormTitle>
+            <Forms.FormText>{i18n("SETTINGS.THEMES.VALIDATOR_NOTE")}</Forms.FormText>
             <div>
                 {themeLinks.map(rawLink => {
                     const { label, link } = (() => {
@@ -128,17 +129,17 @@ function ThemeCard({ theme, enabled, onChange, onDelete }: ThemeCardProps) {
             }
             footer={
                 <Flex flexDirection="row" style={{ gap: "0.2em" }}>
-                    {!!theme.website && <Link href={theme.website}>Website</Link>}
+                    {!!theme.website && <Link href={theme.website}>{i18n("SETTINGS.THEMES.WEBSITE")}</Link>}
                     {!!(theme.website && theme.invite) && " • "}
                     {!!theme.invite && (
                         <Link
                             href={`https://discord.gg/${theme.invite}`}
                             onClick={async e => {
                                 e.preventDefault();
-                                theme.invite != null && openInviteModal(theme.invite).catch(() => showToast("Invalid or expired invite"));
+                                theme.invite != null && openInviteModal(theme.invite).catch(() => showToast(i18n("SETTINGS.THEMES.INVALID_INVITE")));
                             }}
                         >
-                            Discord Server
+                            {i18n("SETTINGS.THEMES.DISCORD_SERVER")}
                         </Link>
                     )}
                 </Flex>
@@ -209,17 +210,17 @@ function ThemesTab() {
         return (
             <>
                 <Card className="vc-settings-card">
-                    <Forms.FormTitle tag="h5">Find Themes:</Forms.FormTitle>
+                    <Forms.FormTitle tag="h5">{i18n("SETTINGS.THEMES.FIND_THEMES")}</Forms.FormTitle>
                     <div style={{ marginBottom: ".5em", display: "flex", flexDirection: "column" }}>
                         <Link style={{ marginRight: ".5em" }} href="https://betterdiscord.app/themes">
-                            BetterDiscord Themes
+                            {i18n("SETTINGS.THEMES.BD_THEMES")}
                         </Link>
-                        <Link href="https://github.com/search?q=discord+theme">GitHub</Link>
+                        <Link href="https://github.com/search?q=discord+theme">{i18n("SETTINGS.THEMES.GITHUB")}</Link>
                     </div>
-                    <Forms.FormText>If using the BD site, click on "Download" and place the downloaded .theme.css file into your themes folder.</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.THEMES.THEME_NOTE")}</Forms.FormText>
                 </Card>
 
-                <Forms.FormSection title="Local Themes">
+                <Forms.FormSection title={i18n("SETTINGS.THEMES.LOCAL_THEMES")}>
                     <QuickActionCard>
                         <>
                             {IS_WEB ?
@@ -227,7 +228,7 @@ function ThemesTab() {
                                     <QuickAction
                                         text={
                                             <span style={{ position: "relative" }}>
-                                                Upload Theme
+                                                {i18n("SETTINGS.THEMES.UPLOAD_THEME")}
                                                 <FileInput
                                                     ref={fileInputRef}
                                                     onChange={onFileUpload}
@@ -240,26 +241,26 @@ function ThemesTab() {
                                     />
                                 ) : (
                                     <QuickAction
-                                        text="Open Themes Folder"
+                                        text={i18n("SETTINGS.THEMES.OPEN_FOLDER")}
                                         action={() => showItemInFolder(themeDir!)}
                                         disabled={themeDirPending}
                                         Icon={FolderIcon}
                                     />
                                 )}
                             <QuickAction
-                                text="Load missing Themes"
+                                text={i18n("SETTINGS.THEMES.LOAD_MISSING")}
                                 action={refreshLocalThemes}
                                 Icon={RestartIcon}
                             />
                             <QuickAction
-                                text="Edit QuickCSS"
+                                text={i18n("SETTINGS.THEMES.EDIT_QUICKCSS")}
                                 action={() => VencordNative.quickCss.openEditor()}
                                 Icon={PaintbrushIcon}
                             />
 
                             {Settings.plugins.ClientTheme.enabled && (
                                 <QuickAction
-                                    text="Edit ClientTheme"
+                                    text={i18n("SETTINGS.THEMES.EDIT_CLIENTTHEME")}
                                     action={() => openPluginModal(Plugins.ClientTheme)}
                                     Icon={PencilIcon}
                                 />
@@ -302,18 +303,18 @@ function ThemesTab() {
         return (
             <>
                 <Card className="vc-settings-card vc-text-selectable">
-                    <Forms.FormTitle tag="h5">Paste links to css files here</Forms.FormTitle>
-                    <Forms.FormText>One link per line</Forms.FormText>
-                    <Forms.FormText>You can prefix lines with @light or @dark to toggle them based on your Discord theme</Forms.FormText>
-                    <Forms.FormText>Make sure to use direct links to files (raw or github.io)!</Forms.FormText>
+                    <Forms.FormTitle tag="h5">{i18n("SETTINGS.THEMES.PASTE_LINKS")}</Forms.FormTitle>
+                    <Forms.FormText>{i18n("SETTINGS.THEMES.ONE_PER_LINE")}</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.THEMES.THEME_PREFIX")}</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.THEMES.USE_DIRECT_LINKS")}</Forms.FormText>
                 </Card>
 
-                <Forms.FormSection title="Online Themes" tag="h5">
+                <Forms.FormSection title={i18n("SETTINGS.THEMES.ONLINE_THEMES")} tag="h5">
                     <TextArea
                         value={themeText}
                         onChange={setThemeText}
                         className={"vc-settings-theme-links"}
-                        placeholder="Theme Links"
+                        placeholder={i18n("SETTINGS.THEMES.THEME_LINKS")}
                         spellCheck={false}
                         onBlur={onBlur}
                         rows={10}
@@ -325,7 +326,7 @@ function ThemesTab() {
     }
 
     return (
-        <SettingsTab title="Themes">
+        <SettingsTab title={i18n("SETTINGS.THEMES.TITLE")}>
             <TabBar
                 type="top"
                 look="brand"
@@ -337,13 +338,13 @@ function ThemesTab() {
                     className="vc-settings-tab-bar-item"
                     id={ThemeTab.LOCAL}
                 >
-                    Local Themes
+                    {i18n("SETTINGS.THEMES.LOCAL_THEMES")}
                 </TabBar.Item>
                 <TabBar.Item
                     className="vc-settings-tab-bar-item"
                     id={ThemeTab.ONLINE}
                 >
-                    Online Themes
+                    {i18n("SETTINGS.THEMES.ONLINE_THEMES")}
                 </TabBar.Item>
             </TabBar>
 
@@ -353,4 +354,4 @@ function ThemesTab() {
     );
 }
 
-export default wrapTab(ThemesTab, "Themes");
+export default wrapTab(ThemesTab, i18n("SETTINGS.THEMES.TITLE"));

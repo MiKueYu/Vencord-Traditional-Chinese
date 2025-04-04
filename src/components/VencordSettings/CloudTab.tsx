@@ -25,6 +25,7 @@ import { authorizeCloud, cloudLogger, deauthorizeCloud, getCloudAuth, getCloudUr
 import { Margins } from "@utils/margins";
 import { deleteCloudSettings, getCloudSettings, putCloudSettings } from "@utils/settingsSync";
 import { Alerts, Button, Forms, Switch, Tooltip } from "@webpack/common";
+import { i18n } from "@api/i18n";
 
 import { SettingsTab, wrapTab } from "./shared";
 
@@ -33,7 +34,7 @@ function validateUrl(url: string) {
         new URL(url);
         return true;
     } catch {
-        return "Invalid URL";
+        return i18n("SETTINGS.CLOUD.INVALID_URL");
     }
 }
 
@@ -46,8 +47,8 @@ async function eraseAllData() {
     if (!res.ok) {
         cloudLogger.error(`Failed to erase data, API returned ${res.status}`);
         showNotification({
-            title: "Cloud Integrations",
-            body: `Could not erase all data (API returned ${res.status}), please contact support.`,
+            title: i18n("SETTINGS.CLOUD.TITLE"),
+            body: i18n("SETTINGS.CLOUD.ERASE_FAILED", { status: res.status }),
             color: "var(--red-360)"
         });
         return;
@@ -57,8 +58,8 @@ async function eraseAllData() {
     await deauthorizeCloud();
 
     showNotification({
-        title: "Cloud Integrations",
-        body: "Successfully erased all data.",
+        title: i18n("SETTINGS.CLOUD.TITLE"),
+        body: i18n("SETTINGS.CLOUD.ERASE_SUCCESS"),
         color: "var(--green-360)"
     });
 }
@@ -68,10 +69,9 @@ function SettingsSyncSection() {
     const sectionEnabled = cloud.authenticated && cloud.settingsSync;
 
     return (
-        <Forms.FormSection title="Settings Sync" className={Margins.top16}>
+        <Forms.FormSection title={i18n("SETTINGS.CLOUD.SYNC_TITLE")} className={Margins.top16}>
             <Forms.FormText variant="text-md/normal" className={Margins.bottom20}>
-                Synchronize your settings to the cloud. This allows easy synchronization across multiple devices with
-                minimal effort.
+                {i18n("SETTINGS.CLOUD.SYNC_DESCRIPTION")}
             </Forms.FormText>
             <Switch
                 key="cloud-sync"
@@ -79,7 +79,7 @@ function SettingsSyncSection() {
                 value={cloud.settingsSync}
                 onChange={v => { cloud.settingsSync = v; }}
             >
-                Settings Sync
+                {i18n("SETTINGS.CLOUD.SYNC_ENABLE")}
             </Switch>
             <div className="vc-cloud-settings-sync-grid">
                 <Button
@@ -87,9 +87,9 @@ function SettingsSyncSection() {
                     disabled={!sectionEnabled}
                     onClick={() => putCloudSettings(true)}
                 >
-                    Sync to Cloud
+                    {i18n("SETTINGS.CLOUD.SYNC_TO_CLOUD")}
                 </Button>
-                <Tooltip text="This will overwrite your local settings with the ones on the cloud. Use wisely!">
+                <Tooltip text={i18n("SETTINGS.CLOUD.SYNC_FROM_CLOUD_TIP")}>
                     {({ onMouseLeave, onMouseEnter }) => (
                         <Button
                             onMouseLeave={onMouseLeave}
@@ -99,7 +99,7 @@ function SettingsSyncSection() {
                             disabled={!sectionEnabled}
                             onClick={() => getCloudSettings(true, true)}
                         >
-                            Sync from Cloud
+                            {i18n("SETTINGS.CLOUD.SYNC_FROM_CLOUD")}
                         </Button>
                     )}
                 </Tooltip>
@@ -109,7 +109,7 @@ function SettingsSyncSection() {
                     disabled={!sectionEnabled}
                     onClick={() => deleteCloudSettings()}
                 >
-                    Delete Cloud Settings
+                    {i18n("SETTINGS.CLOUD.DELETE_CLOUD")}
                 </Button>
             </div>
         </Forms.FormSection>
@@ -120,13 +120,11 @@ function CloudTab() {
     const settings = useSettings(["cloud.authenticated", "cloud.url"]);
 
     return (
-        <SettingsTab title="Vencord Cloud">
-            <Forms.FormSection title="Cloud Settings" className={Margins.top16}>
+        <SettingsTab title={i18n("SETTINGS.CLOUD.TITLE")}>
+            <Forms.FormSection title={i18n("SETTINGS.CLOUD.SETTINGS_TITLE")} className={Margins.top16}>
                 <Forms.FormText variant="text-md/normal" className={Margins.bottom20}>
-                    Vencord comes with a cloud integration that adds goodies like settings sync across devices.
-                    It <Link href="https://vencord.dev/cloud/privacy">respects your privacy</Link>, and
-                    the <Link href="https://github.com/Vencord/Backend">source code</Link> is AGPL 3.0 licensed so you
-                    can host it yourself.
+                    {i18n("SETTINGS.CLOUD.DESCRIPTION")} <Link href="https://vencord.dev/cloud/privacy">{i18n("SETTINGS.CLOUD.RESPECTS_PRIVACY")}</Link>, {i18n("SETTINGS.CLOUD.AND")}
+                    <Link href="https://github.com/Vencord/Backend">{i18n("SETTINGS.CLOUD.SOURCE_CODE")}</Link> {i18n("SETTINGS.CLOUD.LICENSE_INFO")}
                 </Forms.FormText>
                 <Switch
                     key="backend"
@@ -137,13 +135,13 @@ function CloudTab() {
                         else
                             settings.cloud.authenticated = v;
                     }}
-                    note="This will request authorization if you have not yet set up cloud integrations."
+                    note={i18n("SETTINGS.CLOUD.INTEGRATION_NOTE")}
                 >
-                    Enable Cloud Integrations
+                    {i18n("SETTINGS.CLOUD.ENABLE_INTEGRATION")}
                 </Switch>
-                <Forms.FormTitle tag="h5">Backend URL</Forms.FormTitle>
+                <Forms.FormTitle tag="h5">{i18n("SETTINGS.CLOUD.BACKEND_URL")}</Forms.FormTitle>
                 <Forms.FormText className={Margins.bottom8}>
-                    Which backend to use when using cloud integrations.
+                    {i18n("SETTINGS.CLOUD.BACKEND_URL_DESCRIPTION")}
                 </Forms.FormText>
                 <CheckedTextInput
                     key="backendUrl"
@@ -166,22 +164,22 @@ function CloudTab() {
                             await authorizeCloud();
                         }}
                     >
-                        Reauthorise
+                        {i18n("SETTINGS.CLOUD.REAUTHORIZE")}
                     </Button>
                     <Button
                         size={Button.Sizes.MEDIUM}
                         color={Button.Colors.RED}
                         disabled={!settings.cloud.authenticated}
                         onClick={() => Alerts.show({
-                            title: "Are you sure?",
-                            body: "Once your data is erased, we cannot recover it. There's no going back!",
+                            title: i18n("SETTINGS.CLOUD.ERASE_CONFIRM"),
+                            body: i18n("SETTINGS.CLOUD.ERASE_CONFIRM_MESSAGE"),
                             onConfirm: eraseAllData,
-                            confirmText: "Erase it!",
+                            confirmText: i18n("SETTINGS.CLOUD.ERASE_BUTTON"),
                             confirmColor: "vc-cloud-erase-data-danger-btn",
-                            cancelText: "Nevermind"
+                            cancelText: i18n("SETTINGS.CLOUD.ERASE_CANCEL")
                         })}
                     >
-                        Erase All Data
+                        {i18n("SETTINGS.CLOUD.ERASE_DATA")}
                     </Button>
                 </Grid>
 
@@ -192,4 +190,4 @@ function CloudTab() {
     );
 }
 
-export default wrapTab(CloudTab, "Cloud");
+export default wrapTab(CloudTab, i18n("SETTINGS.CLOUD.TITLE"));

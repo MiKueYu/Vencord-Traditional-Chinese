@@ -19,14 +19,20 @@
 import "./settingsStyles.css";
 import "./themesStyles.css";
 
+import { i18n } from "@api/i18n";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { handleComponentFailed } from "@components/handleComponentFailed";
 import { Margins } from "@utils/margins";
 import { onlyOnce } from "@utils/onlyOnce";
-import { Forms, Text } from "@webpack/common";
-import type { ComponentType, PropsWithChildren } from "react";
+import { Forms, Text, React } from "@webpack/common";
 
-export function SettingsTab({ title, children }: PropsWithChildren<{ title: string; }>) {
+// 簡單的界面定義
+interface SettingsTabProps {
+    title: string;
+    children?: any;
+}
+
+export function SettingsTab({ title, children }: SettingsTabProps) {
     return (
         <Forms.FormSection>
             <Text
@@ -44,9 +50,9 @@ export function SettingsTab({ title, children }: PropsWithChildren<{ title: stri
 
 export const handleSettingsTabError = onlyOnce(handleComponentFailed);
 
-export function wrapTab(component: ComponentType<any>, tab: string) {
+export function wrapTab(component: any, tab: string) {
     return ErrorBoundary.wrap(component, {
-        message: `Failed to render the ${tab} tab. If this issue persists, try using the installer to reinstall!`,
+        message: i18n("SETTINGS.TAB_ERROR", { tab }),
         onError: handleSettingsTabError,
     });
 }
