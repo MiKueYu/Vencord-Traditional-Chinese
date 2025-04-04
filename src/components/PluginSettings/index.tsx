@@ -38,6 +38,7 @@ import { Alerts, Button, Card, Forms, lodash, Parser, React, Select, Text, TextI
 import { JSX } from "react";
 
 import Plugins, { ExcludedPlugins } from "~plugins";
+import { getCurrentLanguage, i18n } from "@api/i18n";
 
 // Avoid circular dependency
 const { startDependenciesRecursive, startPlugin, stopPlugin } = proxyLazy(() => require("../../plugins"));
@@ -65,19 +66,19 @@ function ReloadRequiredCard({ required }: { required: boolean; }) {
         <Card className={cl("info-card", { "restart-card": required })}>
             {required ? (
                 <>
-                    <Forms.FormTitle tag="h5">Restart required!</Forms.FormTitle>
+                    <Forms.FormTitle tag="h5">{i18n("SETTINGS.PLUGINS.RESTART_REQUIRED")}</Forms.FormTitle>
                     <Forms.FormText className={cl("dep-text")}>
-                        Restart now to apply new plugins and their settings
+                        {i18n("SETTINGS.PLUGINS.RESTART_REQUIRED_NOTE")}
                     </Forms.FormText>
                     <Button onClick={() => location.reload()} className={cl("restart-button")}>
-                        Restart
+                        {i18n("SETTINGS.PLUGINS.RESTART_NOW")}
                     </Button>
                 </>
             ) : (
                 <>
-                    <Forms.FormTitle tag="h5">Plugin Management</Forms.FormTitle>
-                    <Forms.FormText>Press the cog wheel or info icon to get more info on a plugin</Forms.FormText>
-                    <Forms.FormText>Plugins with a cog wheel have settings you can modify!</Forms.FormText>
+                    <Forms.FormTitle tag="h5">{i18n("SETTINGS.PLUGINS.PLUGIN_MANAGEMENT")}</Forms.FormTitle>
+                    <Forms.FormText>{i18n("SETTINGS.PLUGINS.PLUGIN_MANAGEMENT_NOTE")}</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.PLUGINS.PLUGIN_MANAGEMENT_COG_NOTE")}</Forms.FormText>
                 </>
             )}
         </Card>
@@ -93,8 +94,25 @@ interface PluginCardProps extends React.HTMLProps<HTMLDivElement> {
 
 export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, onMouseLeave, isNew }: PluginCardProps) {
     const settings = Settings.plugins[plugin.name];
+    const lang = getCurrentLanguage();
 
     const isEnabled = () => Vencord.Plugins.isPluginEnabled(plugin.name);
+
+    // 獲取插件描述的翻譯，如果沒有翻譯則使用原始描述
+    const getPluginDescription = () => {
+        const translationKey = `PLUGINS.${plugin.name}.description`;
+        const translatedDesc = i18n(translationKey);
+
+        // 如果i18n返回的是原始key，表示沒有找到翻譯
+        return translatedDesc === translationKey ? plugin.description : translatedDesc;
+    };
+
+    // 獲取插件名稱的翻譯，如果沒有翻譯則使用原始名稱
+    const getPluginName = () => {
+        const translationKey = `PLUGINS.${plugin.name}.name`;
+        const translatedName = i18n(translationKey);
+        return translatedName === translationKey ? plugin.name : translatedName;
+    };
 
     function toggleEnabled() {
         const wasEnabled = isEnabled();
@@ -143,8 +161,8 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
 
     return (
         <AddonCard
-            name={plugin.name}
-            description={plugin.description}
+            name={getPluginName()}
+            description={getPluginDescription()}
             isNew={isNew}
             enabled={isEnabled()}
             setEnabled={toggleEnabled}
@@ -153,7 +171,7 @@ export function PluginCard({ plugin, disabled, onRestartNeeded, onMouseEnter, on
             onMouseLeave={onMouseLeave}
             infoButton={
                 <button
-                    role="switch"
+                    role="button"
                     onClick={() => openPluginModal(plugin, onRestartNeeded)}
                     className={classes(ButtonClasses.button, cl("info-button"))}
                 >
@@ -189,16 +207,16 @@ function ExcludedPluginsList({ search }: { search: string; }) {
         <Text variant="text-md/normal" className={Margins.top16}>
             {matchingExcludedPlugins.length
                 ? <>
-                    <Forms.FormText>Are you looking for:</Forms.FormText>
+                    <Forms.FormText>{i18n("SETTINGS.PLUGINS.LOOKING_FOR")}</Forms.FormText>
                     <ul>
                         {matchingExcludedPlugins.map(([name, reason]) => (
                             <li key={name}>
-                                <b>{name}</b>: Only available on the {ExcludedReasons[reason]}
+                                <b>{name}</b>: {i18n("SETTINGS.PLUGINS.ONLY_AVAILABLE_ON")} {ExcludedReasons[reason]}
                             </li>
                         ))}
                     </ul>
                 </>
-                : "No plugins meet the search criteria."
+                : i18n("SETTINGS.PLUGINS.NO_SEARCH_RESULTS")
             }
         </Text>
     );
@@ -210,10 +228,10 @@ export default function PluginSettings() {
 
     React.useEffect(() => {
         return () => void (changes.hasChanges && Alerts.show({
-            title: "Restart required",
+            title: i18n("SETTINGS.PLUGINS.RESTART_REQUIRED"),
             body: (
                 <>
-                    <p>The following plugins require a restart:</p>
+                    <p>{i18n("SETTINGS.PLUGINS.RESTART_REQUIRED_NOTE")}</p>
                     <div>{changes.map((s, i) => (
                         <>
                             {i > 0 && ", "}
@@ -222,8 +240,8 @@ export default function PluginSettings() {
                     ))}</div>
                 </>
             ),
-            confirmText: "Restart now",
-            cancelText: "Later!",
+            confirmText: i18n("SETTINGS.PLUGINS.RESTART_NOW"),
+            cancelText: i18n("SETTINGS.PLUGINS.LATER"),
             onConfirm: () => location.reload()
         }));
     }, []);
@@ -259,9 +277,14 @@ export default function PluginSettings() {
         if (status === SearchStatus.NEW && !newPlugins?.includes(plugin.name)) return false;
         if (!search.length) return true;
 
+        // 檢查插件名稱和描述的翻譯
+        const translationKey = `PLUGINS.${plugin.name}.description`;
+        const translatedDesc = i18n(translationKey);
+        const description = translatedDesc === translationKey ? plugin.description : translatedDesc;
+
         return (
             plugin.name.toLowerCase().includes(search) ||
-            plugin.description.toLowerCase().includes(search) ||
+            description.toLowerCase().includes(search) ||
             plugin.tags?.some(t => t.toLowerCase().includes(search))
         );
     };
@@ -297,7 +320,7 @@ export default function PluginSettings() {
 
         if (isRequired) {
             const tooltipText = p.required || !depMap[p.name]
-                ? "This plugin is required for Vencord to function."
+                ? i18n("SETTINGS.PLUGINS.REQUIRED_FOR_FUNCTIONING")
                 : makeDependencyList(depMap[p.name]?.filter(d => settings.plugins[d].enabled));
 
             requiredPlugins.push(
@@ -328,22 +351,22 @@ export default function PluginSettings() {
     }
 
     return (
-        <SettingsTab title="Plugins">
+        <SettingsTab title={i18n("SETTINGS.PLUGINS.TITLE")}>
             <ReloadRequiredCard required={changes.hasChanges} />
 
             <Forms.FormTitle tag="h5" className={classes(Margins.top20, Margins.bottom8)}>
-                Filters
+                {i18n("SETTINGS.PLUGINS.FILTERS")}
             </Forms.FormTitle>
 
             <div className={classes(Margins.bottom20, cl("filter-controls"))}>
-                <TextInput autoFocus value={searchValue.value} placeholder="Search for a plugin..." onChange={onSearch} />
+                <TextInput autoFocus value={searchValue.value} placeholder={i18n("SETTINGS.PLUGINS.SEARCH")} onChange={onSearch} />
                 <div className={InputStyles.inputWrapper}>
                     <Select
                         options={[
-                            { label: "Show All", value: SearchStatus.ALL, default: true },
-                            { label: "Show Enabled", value: SearchStatus.ENABLED },
-                            { label: "Show Disabled", value: SearchStatus.DISABLED },
-                            { label: "Show New", value: SearchStatus.NEW }
+                            { label: i18n("SETTINGS.PLUGINS.SHOW_ALL"), value: SearchStatus.ALL, default: true },
+                            { label: i18n("SETTINGS.PLUGINS.SHOW_ENABLED"), value: SearchStatus.ENABLED },
+                            { label: i18n("SETTINGS.PLUGINS.SHOW_DISABLED"), value: SearchStatus.DISABLED },
+                            { label: i18n("SETTINGS.PLUGINS.SHOW_NEW"), value: SearchStatus.NEW }
                         ]}
                         serialize={String}
                         select={onStatusChange}
@@ -354,14 +377,14 @@ export default function PluginSettings() {
                 </div>
             </div>
 
-            <Forms.FormTitle className={Margins.top20}>Plugins</Forms.FormTitle>
+            <Forms.FormTitle className={Margins.top20}>{i18n("SETTINGS.PLUGINS.TITLE")}</Forms.FormTitle>
 
             {plugins.length || requiredPlugins.length
                 ? (
                     <div className={cl("grid")}>
                         {plugins.length
                             ? plugins
-                            : <Text variant="text-md/normal">No plugins meet the search criteria.</Text>
+                            : <Text variant="text-md/normal">{i18n("SETTINGS.PLUGINS.NO_SEARCH_RESULTS")}</Text>
                         }
                     </div>
                 )
@@ -372,12 +395,12 @@ export default function PluginSettings() {
             <Forms.FormDivider className={Margins.top20} />
 
             <Forms.FormTitle tag="h5" className={classes(Margins.top20, Margins.bottom8)}>
-                Required Plugins
+                {i18n("SETTINGS.PLUGINS.REQUIRED_PLUGINS")}
             </Forms.FormTitle>
             <div className={cl("grid")}>
                 {requiredPlugins.length
                     ? requiredPlugins
-                    : <Text variant="text-md/normal">No plugins meet the search criteria.</Text>
+                    : <Text variant="text-md/normal">{i18n("SETTINGS.PLUGINS.NO_SEARCH_RESULTS")}</Text>
                 }
             </div>
         </SettingsTab >
@@ -387,7 +410,7 @@ export default function PluginSettings() {
 function makeDependencyList(deps: string[]) {
     return (
         <React.Fragment>
-            <Forms.FormText>This plugin is required by:</Forms.FormText>
+            <Forms.FormText>{i18n("SETTINGS.PLUGINS.REQUIRED_BY")}</Forms.FormText>
             {deps.map((dep: string) => <Forms.FormText key={dep} className={cl("dep-text")}>{dep}</Forms.FormText>)}
         </React.Fragment>
     );

@@ -19,6 +19,7 @@
 import "./PluginModal.css";
 
 import { generateId } from "@api/Commands";
+import { i18n } from "@api/i18n";
 import { useSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
 import ErrorBoundary from "@components/ErrorBoundary";
@@ -86,6 +87,19 @@ const Components: Record<OptionType, React.ComponentType<ISettingElementProps<an
     [OptionType.CUSTOM]: () => null,
 };
 
+// 獲取插件描述的翻譯函數
+function getPluginDescription(plugin: Plugin) {
+    const translationKey = `PLUGINS.${plugin.name}.description`;
+    const translatedDesc = i18n(translationKey);
+    return translatedDesc === translationKey ? plugin.description : translatedDesc;
+}
+
+function getPluginName(plugin: Plugin) {
+    const translationKey = `PLUGINS.${plugin.name}.name`;
+    const translatedName = i18n(translationKey);
+    return translatedName === translationKey ? plugin.name : translatedName;
+}
+
 export default function PluginModal({ plugin, onRestartNeeded, onClose, transitionState }: PluginModalProps) {
     const [authors, setAuthors] = React.useState<Partial<User>[]>([]);
 
@@ -141,7 +155,7 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
 
     function renderSettings() {
         if (!hasSettings || !plugin.options) {
-            return <Forms.FormText>There are no settings for this plugin.</Forms.FormText>;
+            return <Forms.FormText>{i18n("SETTINGS.PLUGINS.NO_SETTINGS")}</Forms.FormText>;
         } else {
             const options = Object.entries(plugin.options).map(([key, setting]) => {
                 if (setting.type === OptionType.CUSTOM || setting.hidden) return null;
@@ -214,7 +228,7 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
     return (
         <ModalRoot transitionState={transitionState} size={ModalSize.MEDIUM} className="vc-text-selectable">
             <ModalHeader separator={false}>
-                <Text variant="heading-lg/semibold" style={{ flexGrow: 1 }}>{plugin.name}</Text>
+                <Text variant="heading-lg/semibold" style={{ flexGrow: 1 }}>{getPluginName(plugin)}</Text>
 
                 {/*
                 <Button look={Button.Looks.BLANK} onClick={switchToPopout}>
@@ -226,21 +240,21 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
             <ModalContent>
                 <Forms.FormSection>
                     <Flex className={cl("info")}>
-                        <Forms.FormText className={cl("description")}>{plugin.description}</Forms.FormText>
+                        <Forms.FormText className={cl("description")}>{getPluginDescription(plugin)}</Forms.FormText>
                         {!pluginMeta.userPlugin && (
                             <div className="vc-settings-modal-links">
                                 <WebsiteButton
-                                    text="View more info"
+                                    text={i18n("SETTINGS.PLUGINS.VIEW_MORE_INFO")}
                                     href={`https://vencord.dev/plugins/${plugin.name}`}
                                 />
                                 <GithubButton
-                                    text="View source code"
+                                    text={i18n("SETTINGS.PLUGINS.VIEW_SOURCE_CODE")}
                                     href={`https://github.com/${gitRemote}/tree/main/src/plugins/${pluginMeta.folderName}`}
                                 />
                             </div>
                         )}
                     </Flex>
-                    <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0 }}>Authors</Forms.FormTitle>
+                    <Forms.FormTitle tag="h3" style={{ marginTop: 8, marginBottom: 0 }}>{i18n("SETTINGS.PLUGINS.AUTHORS")}</Forms.FormTitle>
                     <div style={{ width: "fit-content", marginBottom: 8 }}>
                         <UserSummaryItem
                             users={authors}
@@ -248,22 +262,9 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
                             guildId={undefined}
                             renderIcon={false}
                             max={6}
-                            showDefaultAvatarsForNullUsers
-                            showUserPopout
+                            showUserPopout={true}
                             renderMoreUsers={renderMoreUsers}
-                            renderUser={(user: User) => (
-                                <Clickable
-                                    className={AvatarStyles.clickableAvatar}
-                                    onClick={() => openContributorModal(user)}
-                                >
-                                    <img
-                                        className={AvatarStyles.avatar}
-                                        src={user.getAvatarURL(void 0, 80, true)}
-                                        alt={user.username}
-                                        title={user.username}
-                                    />
-                                </Clickable>
-                            )}
+                            className={AvatarStyles.userSummaryItem}
                         />
                     </div>
                 </Forms.FormSection>
@@ -302,7 +303,7 @@ export default function PluginModal({ plugin, onRestartNeeded, onClose, transiti
                                     onMouseLeave={onMouseLeave}
                                     disabled={!canSubmit()}
                                 >
-                                    Save & Close
+                                    {i18n("SETTINGS.PLUGINS.SAVE_CHANGES")}
                                 </Button>
                             )}
                         </Tooltip>
