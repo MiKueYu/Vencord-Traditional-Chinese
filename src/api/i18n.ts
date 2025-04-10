@@ -6,7 +6,7 @@
 
 import { Settings } from "./Settings";
 
-export type Language = "en-US" | "zh-TW";
+export type Language = "en-US" | "zh-TW" | "zh-CN";
 
 export interface TranslationObject {
     [key: string]: string | TranslationObject;
@@ -20,7 +20,8 @@ const enUS: TranslationObject = {
         LANGUAGE_DESCRIPTION: "Select the language for Vencord's interface",
         LANGUAGES: {
             "en-US": "English",
-            "zh-TW": "繁體中文"
+            "zh-TW": "繁體中文",
+            "zh-CN": "简体中文"
         },
         TAB_ERROR: "Failed to render the {tab} tab. If this issue persists, try using the installer to reinstall!",
         DONATIONS: {
@@ -414,7 +415,8 @@ const zhTW: TranslationObject = {
         LANGUAGE_DESCRIPTION: "選擇 Vencord 界面的語言",
         LANGUAGES: {
             "en-US": "English",
-            "zh-TW": "繁體中文"
+            "zh-TW": "繁體中文",
+            "zh-CN": "简体中文"
         },
         TAB_ERROR: "無法渲染{tab}標籤。如果此問題持續存在，請嘗試使用安裝程式重新安裝！",
         DONATIONS: {
@@ -800,10 +802,406 @@ const zhTW: TranslationObject = {
     }
 };
 
+// 简体中文
+const zhCN: TranslationObject = {
+    SETTINGS: {
+        VENCORD_SETTINGS: "Vencord 设置",
+        LANGUAGE: "语言",
+        LANGUAGE_DESCRIPTION: "选择 Vencord 界面的语言",
+        LANGUAGES: {
+            "en-US": "English",
+            "zh-TW": "繁体中文",
+            "zh-CN": "简体中文"
+        },
+        TAB_ERROR: "无法渲染{tab}标签页。如果此问题持续存在，请尝试使用安装程序重新安装！",
+        DONATIONS: {
+            TITLE: "捐赠",
+            SUBTITLE: "感谢您的捐赠！",
+            DESCRIPTION: "您可以随时通过消息 @vending.machine 来管理您的特权。",
+            SUPPORT_PROJECT: "支持项目",
+            SUPPORT_DESCRIPTION: "请考虑通过捐赠来支持 Vencord 的开发！"
+        },
+        CONTRIBUTIONS: {
+            TITLE: "贡献",
+            SUBTITLE: "感谢您的贡献！",
+            DESCRIPTION: "由于您对 Vencord 做出了贡献，您现在拥有一个很酷的新徽章！",
+            BUTTON: "查看您的贡献"
+        },
+        QUICK_ACTIONS: {
+            TITLE: "快捷操作",
+            NOTIFICATION_LOG: "通知日志",
+            EDIT_QUICKCSS: "编辑 QuickCSS",
+            RELAUNCH_DISCORD: "重启 Discord",
+            OPEN_SETTINGS_FOLDER: "打开设置文件夹",
+            VIEW_SOURCE_CODE: "查看源代码"
+        },
+        MAIN_SETTINGS: {
+            TITLE: "设置",
+            HINT: "提示：您可以在「设置」插件的设置中更改此设置部分的位置",
+            ENABLE_CUSTOM_CSS: "启用自定义 CSS",
+            ENABLE_CUSTOM_CSS_NOTE: "加载您的自定义 CSS",
+            ENABLE_REACT_DEVTOOLS: "启用 React 开发者工具",
+            ENABLE_REACT_DEVTOOLS_NOTE: "需要完全重启",
+            WINDOW_FRAME: {
+                DISABLE_FRAME: "禁用窗口框架",
+                NATIVE_TITLEBAR: "使用 Windows 原生标题栏而不是 Discord 的自定义标题栏"
+            },
+            WINDOW_FRAME_NOTE: "需要完全重启",
+            TRANSPARENT_WINDOW: "启用窗口透明",
+            TRANSPARENT_WINDOW_NOTE: "您需要一个支持透明的主题，否则此功能不会生效。将阻止窗口调整大小！需要完全重启",
+            CTRL_Q: "注册 Ctrl+Q 作为关闭 Discord 的快捷键（Alt+F4 的替代方案）",
+            CTRL_Q_NOTE: "需要完全重启",
+            DISABLE_MIN_SIZE: "禁用最小窗口大小",
+            DISABLE_MIN_SIZE_NOTE: "需要完全重启"
+        },
+        BACKUP_RESTORE: {
+            TITLE: "备份与恢复",
+            WARNING: "警告",
+            WARNING_MESSAGE: "导入设置文件将覆盖您当前的设置。",
+            DESCRIPTION: "您可以将 Vencord 设置导出为 JSON 文件。这允许您轻松地将设置传输到另一台设备，或在重新安装 Vencord 或 Discord 后恢复设置。",
+            EXPORT_CONTAINS: "设置导出包含：",
+            CUSTOM_QUICKCSS: "自定义 QuickCSS",
+            THEME_LINKS: "主题链接",
+            PLUGIN_SETTINGS: "插件设置",
+            IMPORT_BUTTON: "导入设置",
+            EXPORT_BUTTON: "导出设置"
+        },
+        CLOUD: {
+            TITLE: "Vencord 云",
+            SETTINGS_TITLE: "云设置",
+            DESCRIPTION: "Vencord 配有云集成功能，可提供跨设备设置同步等功能。它尊重您的隐私，且源代码采用 AGPL 3.0 许可，因此您可以自行托管。",
+            ENABLE_INTEGRATION: "启用云集成",
+            INTEGRATION_NOTE: "如果您尚未设置云集成，这将请求授权。",
+            BACKEND_URL: "后端 URL",
+            BACKEND_URL_DESCRIPTION: "使用云集成时要使用的后端。",
+            REAUTHORIZE: "重新授权",
+            ERASE_DATA: "清除所有数据",
+            ERASE_CONFIRM: "您确定吗？",
+            ERASE_CONFIRM_MESSAGE: "一旦数据被清除，我们无法恢复。这是不可逆的！",
+            ERASE_BUTTON: "清除它！",
+            ERASE_CANCEL: "取消",
+            ERASE_FAILED: "无法清除所有数据（API 返回 {status}），请联系支持。",
+            ERASE_SUCCESS: "成功清除所有数据。",
+            SYNC_TITLE: "设置同步",
+            SYNC_DESCRIPTION: "将您的设置同步到云端。这允许在多个设备之间轻松同步，几乎不需要额外努力。",
+            SYNC_ENABLE: "设置同步",
+            SYNC_TO_CLOUD: "同步到云端",
+            SYNC_FROM_CLOUD: "从云端同步",
+            SYNC_FROM_CLOUD_TIP: "这将用云端的设置覆盖您的本地设置。谨慎使用！",
+            DELETE_CLOUD: "删除云端设置",
+            INVALID_URL: "无效的 URL"
+        },
+        NOTIFICATION: {
+            TITLE: "通知设置",
+            STYLE: "通知样式",
+            PERMISSION_DENIED: "桌面通知权限被拒绝",
+            PERMISSION_DENIED_MESSAGE: "您已拒绝通知权限。因此，桌面通知将不起作用！",
+            STYLE_DESCRIPTION: "一些插件可能会向您显示通知。这些通知有两种样式：",
+            VENCORD_NOTIFICATIONS: "Vencord 通知：这些是应用内通知",
+            DESKTOP_NOTIFICATIONS: "桌面通知：原生桌面通知（如当您收到 ping 时）",
+            STYLE_OPTIONS: {
+                NOT_FOCUSED: "仅在 Discord 未聚焦时使用桌面通知",
+                ALWAYS: "始终使用桌面通知",
+                NEVER: "始终使用 Vencord 通知"
+            },
+            POSITION: "通知位置",
+            POSITION_OPTIONS: {
+                BOTTOM_RIGHT: "右下角",
+                TOP_RIGHT: "右上角"
+            },
+            TIMEOUT: "通知超时",
+            TIMEOUT_NOTE: "设置为 0s 永不自动超时",
+            LOG_LIMIT: "通知日志限制",
+            LOG_LIMIT_DESCRIPTION: "在旧通知被移除前，要保存在日志中的通知数量。设置为 0 禁用通知日志，设置为 ∞ 永不自动移除旧通知",
+            VIEW_LOG: "查看通知日志"
+        },
+        THEMES: {
+            TITLE: "主题",
+            LOCAL_THEMES: "本地主题",
+            ONLINE_THEMES: "在线主题",
+            FIND_THEMES: "寻找主题：",
+            BD_THEMES: "BetterDiscord 主题",
+            GITHUB: "GitHub",
+            THEME_NOTE: "如果使用 BD 网站，点击「下载」并将下载的 .theme.css 文件放入您的主题文件夹。",
+            UPLOAD_THEME: "上传主题",
+            OPEN_FOLDER: "打开主题文件夹",
+            LOAD_MISSING: "加载缺失的主题",
+            EDIT_QUICKCSS: "编辑 QuickCSS",
+            EDIT_CLIENTTHEME: "编辑 ClientTheme",
+            PASTE_LINKS: "在此处粘贴 css 文件链接",
+            ONE_PER_LINE: "每行一个链接",
+            THEME_PREFIX: "您可以在行前添加 @light 或 @dark 前缀，根据您的 Discord 主题切换它们",
+            USE_DIRECT_LINKS: "确保使用直接链接到文件（原始或 github.io）！",
+            VALIDATOR: "验证器",
+            VALIDATOR_NOTE: "此部分将告诉您您的主题是否能够成功加载",
+            NOT_CSS_FILE: "不是 CSS 文件。请记得使用原始链接！",
+            CHECKING: "检查中...",
+            ERROR: "错误",
+            VALID: "有效！",
+            WEBSITE: "网站",
+            DISCORD_SERVER: "Discord 服务器",
+            INVALID_INVITE: "无效或已过期的邀请",
+            THEME_LINKS: "主题链接"
+        },
+        UPDATER: {
+            TITLE: "更新程序",
+            UPDATER_SETTINGS: "更新程序设置",
+            AUTO_UPDATE: "自动更新",
+            AUTO_UPDATE_NOTE: "无需确认提示自动更新 Vencord",
+            AUTO_UPDATE_NOTIFICATION: "在自动更新完成时获取通知",
+            AUTO_UPDATE_NOTIFICATION_NOTE: "在 Vencord 自动更新时显示通知",
+            REPO: "仓库",
+            UPDATES: "更新",
+            UP_TO_DATE: "已是最新！",
+            UPDATE_AVAILABLE: "有 1 个更新",
+            UPDATES_AVAILABLE: "有 {count} 个更新",
+            UPDATE_NOW: "立即更新",
+            CHECK_UPDATES: "检查更新",
+            NO_UPDATES: "未找到更新！",
+            NEWER_LOCAL: "您的本地副本有更新的提交。请暂存或重置它们。",
+            FAILED_CHECK: "检查更新失败。请查看控制台了解更多信息",
+            UNKNOWN_ERROR: "发生未知错误",
+            UPDATE_SUCCESS: "更新成功！",
+            RESTART_PROMPT: "更新成功。立即重新启动以应用更改？",
+            RESTART: "重新启动",
+            LATER: "暂时不要！",
+            FAILED_RETRIEVE: "获取失败 - 请查看控制台",
+            LOADING: "加载中..."
+        },
+        PLUGINS: {
+            TITLE: "插件",
+            SEARCH: "搜索插件...",
+            DISCORD: "Discord 插件",
+            USERPLUGINS: "用户插件",
+            FOLDER: "插件文件夹",
+            PLUGIN_SETTINGS: "插件设置",
+            PLUGIN_SETTINGS_DESCRIPTION: "配置已安装的插件",
+            USERPLUGINS_DIRECTORY: "用户插件目录",
+            USERPLUGINS_DESCRIPTION: "您可以在此处放置自定义插件",
+            USERPLUGINS_OPEN: "打开用户插件目录",
+            USERPLUGINS_CREATE: "创建一个示例插件",
+            API_DOCS: "API 文档",
+            API_DOCS_DESCRIPTION: "了解如何开发 Vencord 插件",
+            ENABLE_ALL: "全部启用",
+            DISABLE_ALL: "全部禁用",
+            PLUGIN_TOGGLED: "{count, plural, one {已切换 # 个插件} other {已切换 # 个插件}}",
+            NO_PLUGINS_FOUND: "未找到插件",
+            PLUGIN_MANAGEMENT: "插件管理",
+            PLUGIN_MANAGEMENT_NOTE: "点击卡片右侧的开关来启用或禁用插件。",
+            PLUGIN_MANAGEMENT_COG_NOTE: "点击齿轮或信息图标以配置或了解更多关于插件的信息。",
+            FILTERS: "过滤器",
+            SHOW_ALL: "显示全部",
+            SHOW_ENABLED: "显示已启用",
+            SHOW_DISABLED: "显示已禁用",
+            SHOW_NEW: "显示新增插件",
+            AUTHORS: "作者",
+            VIEW_MORE_INFO: "查看更多信息",
+            VIEW_SOURCE_CODE: "查看源代码",
+            NO_SETTINGS: "此插件没有设置选项。",
+            SAVE_CHANGES: "保存并关闭",
+            RESTART_REQUIRED: "需要重新启动！",
+            RESTART_REQUIRED_NOTE: "以下插件需要重新启动：",
+            RESTART_NOW: "立即重新启动",
+            LATER: "稍后再说",
+            REQUIRED_PLUGINS: "必需插件",
+            LOOKING_FOR: "您是否在寻找：",
+            ONLY_AVAILABLE_ON: "仅适用于",
+            NO_SEARCH_RESULTS: "没有符合搜索条件的插件。",
+            REQUIRED_BY: "此插件被以下插件所需要：",
+            REQUIRED_FOR_FUNCTIONING: "此插件是Vencord正常运作所必需的。"
+        }
+    },
+
+    // 添加插件描述的翻译
+    PLUGINS: {
+        AccountPanelServerProfile: {
+            name: "账户面板服务器资料",
+            description: "在左下角右键点击您的账户面板，查看您在当前服务器的资料"
+        },
+        AlwaysAnimate: {
+            name: "总是动画",
+            description: "让所有可动画的元素都能动起来"
+        },
+        AlwaysExpandRoles: {
+            name: "总是展开角色",
+            description: "在个人资料弹出窗口中始终展开角色列表"
+        },
+        AlwaysTrust: {
+            name: "总是信任",
+            description: "移除恼人的不受信任域名和可疑文件弹出提示"
+        },
+        AnonymiseFileNames: {
+            name: "匿名化文件名",
+            description: "匿名化上传的文件名称"
+        },
+        BANger: {
+            name: "自定义禁令图片",
+            description: "在禁令对话框中用自定义图片替换GIF"
+        },
+        BetterFolders: {
+            name: "更好的文件夹",
+            description: "在专用侧边栏显示服务器文件夹，并添加文件夹相关改进"
+        },
+        BetterGifAltText: {
+            name: "更好的GIF替代文本",
+            description: "将GIF替代文本从简单的'GIF'更改为包含gif标签/文件名"
+        },
+        BetterGifPicker: {
+            name: "更好的GIF选择器",
+            description: "让gif选择器默认打开收藏类别"
+        },
+        BetterNotesBox: {
+            name: "更好的笔记框",
+            description: "隐藏笔记或禁用拼写检查（在设置中配置!!）"
+        },
+        BetterRoleContext: {
+            name: "更好的角色上下文",
+            description: "添加复制角色颜色/编辑角色/以角色身份查看的选项"
+        },
+        BetterRoleDot: {
+            name: "更好的角色点",
+            description: "在RoleDot上复制角色颜色（无障碍设置）"
+        },
+        BetterSessions: {
+            name: "更好的会话",
+            description: "增强会话（设备）菜单。允许您查看精确时间戳，为每个会话自定义名称并启用一键复制您的令牌。"
+        },
+        BetterSettings: {
+            name: "更好的设置",
+            description: "增强您的设置菜单打开体验"
+        },
+        BetterUploadButton: {
+            name: "更好的上传按钮",
+            description: "单击上传，右键点击打开菜单"
+        },
+        BiggerStreamPreview: {
+            name: "更大的直播预览",
+            description: "此插件允许您放大直播预览"
+        },
+        BlurNSFW: {
+            name: "模糊 NSFW",
+            description: "在 NSFW 频道中模糊附件直到悬停"
+        },
+        CallTimer: {
+            name: "通话计时器",
+            description: "为语音通话添加计时器"
+        },
+        ClearURLs: {
+            name: "清除 URL",
+            description: "从 URL 中移除跟踪垃圾"
+        },
+        ClientTheme: {
+            name: "客户端主题",
+            description: "重新创建旧的客户端主题实验。为您的 Discord 客户端主题添加颜色"
+        },
+        ColorSighted: {
+            name: "色彩感知",
+            description: "从状态中移除色盲友好图标，就像 2015-2017 年的 Discord"
+        },
+        ConsoleJanitor: {
+            name: "控制台清洁工",
+            description: "禁用烦人的控制台消息/错误"
+        },
+        ConsoleShortcuts: {
+            name: "控制台快捷方式",
+            description: "为控制台上的许多功能添加更短的别名"
+        },
+        CopyEmojisMarkdown: {
+            name: "复制表情符号标记",
+            description: "允许您将表情符号复制为格式化字符串"
+        },
+        CustomCSS: {
+            name: "自定义CSS",
+            description: "允许您安装自定义CSS。"
+        },
+        DisableDMCallIdle: {
+            name: "禁用私信通话闲置",
+            description: "防止Discord检测您在私信通话中的闲置状态"
+        },
+        FakeDeafen: {
+            name: "假装耳聋",
+            description: "允许您在显示为耳聋的同时听到他人"
+        },
+        FakeNitro: {
+            name: "假Nitro",
+            description: "通过插件使用需要Nitro的功能"
+        },
+        FavoriteGifs: {
+            name: "收藏GIF",
+            description: "允许您将GIF保存为「收藏」"
+        },
+        FixYoutubeLinks: {
+            name: "修复YouTube链接",
+            description: "打开youtube.com链接而非youtube-nocookie.com"
+        },
+        ForceOwnerCrown: {
+            name: "强制显示拥有者皇冠",
+            description: "即使服务器使用角色代替皇冠，也总是显示拥有者皇冠"
+        },
+        ImageZoom: {
+            name: "图像缩放",
+            description: "让您可以放大图像"
+        },
+        InvisibleChat: {
+            name: "隐形聊天",
+            description: "允许您发送悬停前不可见的消息（剧透替代品）"
+        },
+        MessageLinkEmbeds: {
+            name: "消息链接嵌入",
+            description: "显示您链接的消息的嵌入"
+        },
+        MessageLogger: {
+            name: "消息记录器",
+            description: "记录已删除和已编辑的消息。"
+        },
+        MessageTags: {
+            name: "消息标签",
+            description: "为消息添加标签以便于查找"
+        },
+        MoreCommands: {
+            name: "更多命令",
+            description: "为Discord添加有用的命令"
+        },
+        MoreUserTags: {
+            name: "更多用户标签",
+            description: "为Discord添加更多用户标签！"
+        },
+        MuteNewGuild: {
+            name: "静音新服务器",
+            description: "自动静音新加入的服务器"
+        },
+        NoF1: {
+            name: "禁用F1",
+            description: "禁用F1帮助快捷键"
+        },
+        NoReplyMention: {
+            name: "回复不提及",
+            description: "使Discord默认在回复时不提及"
+        },
+        PermissionsViewer: {
+            name: "权限查看器",
+            description: "查看频道中用户或您自己的权限。"
+        },
+        PictureInPicture: {
+            name: "画中画",
+            description: "为流媒体和视频添加画中画支持"
+        },
+        PlatformIndicators: {
+            name: "平台指示器",
+            description: "显示其他用户正在使用的平台。"
+        },
+        Settings: {
+            name: "设置",
+            description: "添加一个打开Vencord设置的按钮。"
+        }
+    }
+};
+
 // 翻譯集合
 const translations: Record<Language, TranslationObject> = {
     "en-US": enUS,
-    "zh-TW": zhTW
+    "zh-TW": zhTW,
+    "zh-CN": zhCN
 };
 
 // 獲取當前語言
@@ -848,4 +1246,4 @@ export function i18n(key: string, replacements?: Record<string, string | number>
     }
 
     return value;
-} 
+}
