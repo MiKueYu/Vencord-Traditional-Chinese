@@ -1216,6 +1216,7 @@ const zhCN: TranslationObject = {
             description: "添加一个打开Vencord设置的按钮。"
         },
         Translate: {
+            title: "翻译",
             name: "翻译",
             description: "使用谷歌翻译或DeepL翻译消息",
             receivedInput: "接收到的消息应该从哪种语言翻译过来",
@@ -1225,10 +1226,14 @@ const zhCN: TranslationObject = {
             showChatBarButton: "在聊天栏中显示翻译按钮",
             service: {
                 description: "翻译服务（Web端不支持！）",
-                end: "“翻译服务"
+                end: "翻译服务"
             },
             autoTranslate: "在发送前自动翻译你的消息。你也可以按住 Shift 键或右键点击翻译按钮来切换此功能。",
-            showAutoTranslateTooltip: "每当消息被自动翻译时，在聊天栏按钮上显示工具提示"
+            showAutoTranslateTooltip: "每当消息被自动翻译时，在聊天栏按钮上显示工具提示",
+            Dismiss: "关闭",
+            accessory: "翻译自",
+            placeholder: "选择一种语言",
+            AutoTranslateToggle: "自动翻译"
         }
     }
 };

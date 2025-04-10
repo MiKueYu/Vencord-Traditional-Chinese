@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { i18n } from "@api/i18n";
 import { Margins } from "@utils/margins";
 import { ModalCloseButton, ModalContent, ModalHeader, ModalProps, ModalRoot } from "@utils/modal";
 import { Forms, SearchableSelect, Switch, useMemo } from "@webpack/common";
@@ -47,7 +48,7 @@ function LanguageSelect({ settingsKey, includeAuto }: { settingsKey: typeof Lang
             <SearchableSelect
                 options={options}
                 value={options.find(o => o.value === currentValue)}
-                placeholder={"Select a language"}
+                placeholder={i18n("PLUGINS.Translate.placeholder")}
                 maxVisibleItems={5}
                 closeOnSelect={true}
                 onChange={v => settings.store[settingsKey] = v}
@@ -66,7 +67,7 @@ function AutoTranslateToggle() {
             note={settings.def.autoTranslate.description}
             hideBorder
         >
-            Auto Translate
+            {i18n("PLUGINS.Translate.AutoTranslateToggle")}
         </Switch>
     );
 }
@@ -77,7 +78,7 @@ export function TranslateModal({ rootProps }: { rootProps: ModalProps; }) {
         <ModalRoot {...rootProps}>
             <ModalHeader className={cl("modal-header")}>
                 <Forms.FormTitle tag="h2" className={cl("modal-title")}>
-                    Translate
+                    {i18n("PLUGINS.Translate.title")}
                 </Forms.FormTitle>
                 <ModalCloseButton onClick={rootProps.onClose} />
             </ModalHeader>

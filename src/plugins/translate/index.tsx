@@ -19,6 +19,7 @@
 import "./styles.css";
 
 import { findGroupChildrenByChildId, NavContextMenuPatchCallback } from "@api/ContextMenu";
+import { i18n } from "@api/i18n";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { ChannelStore, Menu } from "@webpack/common";
@@ -37,7 +38,7 @@ const messageCtxPatch: NavContextMenuPatchCallback = (children, { message }) => 
     group.splice(group.findIndex(c => c?.props?.id === "copy-text") + 1, 0, (
         <Menu.MenuItem
             id="vc-trans"
-            label="Translate"
+            label={i18n("PLUGINS.Translate.title")}
             icon={TranslateIcon}
             action={async () => {
                 const trans = await translate("received", message.content);
@@ -68,7 +69,7 @@ export default definePlugin({
         if (!message.content) return null;
 
         return {
-            label: "Translate",
+            label: i18n("PLUGINS.Translate.title"),
             icon: TranslateIcon,
             message,
             channel: ChannelStore.getChannel(message.channel_id),

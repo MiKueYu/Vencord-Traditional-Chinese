@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { i18n } from "@api/i18n";
 import { Parser, useEffect, useState } from "@webpack/common";
 import { Message } from "discord-types/general";
 
@@ -34,7 +35,7 @@ function Dismiss({ onDismiss }: { onDismiss: () => void; }) {
             onClick={onDismiss}
             className={cl("dismiss")}
         >
-            Dismiss
+            {i18n("PLUGINS.Translate.Dismiss")}
         </button>
     );
 }
@@ -58,7 +59,7 @@ export function TranslationAccessory({ message }: { message: Message; }) {
             <TranslateIcon width={16} height={16} className={cl("accessory-icon")} />
             {Parser.parse(translation.text)}
             {" "}
-            (translated from {translation.sourceLanguage} - <Dismiss onDismiss={() => setTranslation(undefined)} />)
+            {i18n("PLUGINS.Translate.accessory")} {translation.sourceLanguage} - <Dismiss onDismiss={() => setTranslation(undefined)} />
         </span>
     );
 }
