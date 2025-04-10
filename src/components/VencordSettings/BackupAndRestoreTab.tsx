@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { i18n } from "@api/i18n";
 import { Flex } from "@components/Flex";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
@@ -26,24 +27,22 @@ import { SettingsTab, wrapTab } from "./shared";
 
 function BackupRestoreTab() {
     return (
-        <SettingsTab title="Backup & Restore">
+        <SettingsTab title={i18n("SETTINGS.BACKUP_RESTORE.TITLE")}>
             <Card className={classes("vc-settings-card", "vc-backup-restore-card")}>
                 <Flex flexDirection="column">
-                    <strong>Warning</strong>
-                    <span>Importing a settings file will overwrite your current settings.</span>
+                    <strong>{i18n("SETTINGS.BACKUP_RESTORE.WARNING")}</strong>
+                    <span>{i18n("SETTINGS.BACKUP_RESTORE.WARNING_MESSAGE")}</span>
                 </Flex>
             </Card>
             <Text variant="text-md/normal" className={Margins.bottom8}>
-                You can import and export your Vencord settings as a JSON file.
-                This allows you to easily transfer your settings to another device,
-                or recover your settings after reinstalling Vencord or Discord.
+                {i18n("SETTINGS.BACKUP_RESTORE.DESCRIPTION")}
             </Text>
             <Text variant="text-md/normal" className={Margins.bottom8}>
-                Settings Export contains:
+                {i18n("SETTINGS.BACKUP_RESTORE.EXPORT_CONTAINS")}
                 <ul>
-                    <li>&mdash; Custom QuickCSS</li>
-                    <li>&mdash; Theme Links</li>
-                    <li>&mdash; Plugin Settings</li>
+                    <li>&mdash; {i18n("SETTINGS.BACKUP_RESTORE.CUSTOM_QUICKCSS")}</li>
+                    <li>&mdash; {i18n("SETTINGS.BACKUP_RESTORE.THEME_LINKS")}</li>
+                    <li>&mdash; {i18n("SETTINGS.BACKUP_RESTORE.PLUGIN_SETTINGS")}</li>
                 </ul>
             </Text>
             <Flex>
@@ -51,13 +50,13 @@ function BackupRestoreTab() {
                     onClick={() => uploadSettingsBackup()}
                     size={Button.Sizes.SMALL}
                 >
-                    Import Settings
+                    {i18n("SETTINGS.BACKUP_RESTORE.IMPORT_BUTTON")}
                 </Button>
                 <Button
                     onClick={downloadSettingsBackup}
                     size={Button.Sizes.SMALL}
                 >
-                    Export Settings
+                    {i18n("SETTINGS.BACKUP_RESTORE.EXPORT_BUTTON")}
                 </Button>
             </Flex>
         </SettingsTab>

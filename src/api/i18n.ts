@@ -15,6 +15,8 @@ export interface TranslationObject {
 // 英文（默認）
 const enUS: TranslationObject = {
     SETTINGS: {
+        SIDEBAR_HEADER: "Vencord",
+        SIDEBAR: "Vencord",
         VENCORD_SETTINGS: "Vencord Settings",
         LANGUAGE: "Language",
         LANGUAGE_DESCRIPTION: "Select the language for Vencord's interface",
@@ -65,6 +67,7 @@ const enUS: TranslationObject = {
             DISABLE_MIN_SIZE_NOTE: "Requires a full restart"
         },
         BACKUP_RESTORE: {
+            SIDEBAR: "Backup & Restore",
             TITLE: "Backup & Restore",
             WARNING: "Warning",
             WARNING_MESSAGE: "Importing a settings file will overwrite your current settings.",
@@ -77,6 +80,7 @@ const enUS: TranslationObject = {
             EXPORT_BUTTON: "Export Settings"
         },
         CLOUD: {
+            SIDEBAR: "Cloud",
             TITLE: "Vencord Cloud",
             SETTINGS_TITLE: "Cloud Settings",
             DESCRIPTION: "Vencord comes with a cloud integration that adds goodies like settings sync across devices. It respects your privacy, and the source code is AGPL 3.0 licensed so you can host it yourself.",
@@ -126,6 +130,7 @@ const enUS: TranslationObject = {
             VIEW_LOG: "View Notification Log"
         },
         THEMES: {
+            SIDEBAR: "Themes",
             TITLE: "Themes",
             LOCAL_THEMES: "Local Themes",
             ONLINE_THEMES: "Online Themes",
@@ -154,6 +159,7 @@ const enUS: TranslationObject = {
             THEME_LINKS: "Theme Links"
         },
         UPDATER: {
+            SIDEBAR: "Updater",
             TITLE: "Updater",
             UPDATER_SETTINGS: "Updater Settings",
             AUTO_UPDATE: "Automatically update",
@@ -179,6 +185,7 @@ const enUS: TranslationObject = {
             LOADING: "Loading..."
         },
         PLUGINS: {
+            SIDEBAR: "Plugins",
             TITLE: "Plugins",
             SEARCH: "Search for plugins...",
             DISCORD: "Discord Plugins",
@@ -410,6 +417,8 @@ const enUS: TranslationObject = {
 // 繁體中文
 const zhTW: TranslationObject = {
     SETTINGS: {
+        SIDEBAR_HEADER: "Vencord",
+        SIDEBAR: "Vencord",
         VENCORD_SETTINGS: "Vencord 設定",
         LANGUAGE: "語言",
         LANGUAGE_DESCRIPTION: "選擇 Vencord 界面的語言",
@@ -460,6 +469,7 @@ const zhTW: TranslationObject = {
             DISABLE_MIN_SIZE_NOTE: "需要完全重新啟動"
         },
         BACKUP_RESTORE: {
+            SIDEBAR: "備份與恢復",
             TITLE: "備份與恢復",
             WARNING: "警告",
             WARNING_MESSAGE: "導入設定文件將覆蓋您當前的設定。",
@@ -472,6 +482,7 @@ const zhTW: TranslationObject = {
             EXPORT_BUTTON: "導出設定"
         },
         CLOUD: {
+            SIDEBAR: "雲",
             TITLE: "Vencord 雲",
             SETTINGS_TITLE: "雲設定",
             DESCRIPTION: "Vencord 配有雲集成功能，可提供跨設備設定同步等好處。它尊重您的隱私，且源代碼採用 AGPL 3.0 許可，因此您可以自行託管。",
@@ -521,6 +532,7 @@ const zhTW: TranslationObject = {
             VIEW_LOG: "查看通知日誌"
         },
         THEMES: {
+            SIDEBAR: "主題",
             TITLE: "主題",
             LOCAL_THEMES: "本地主題",
             ONLINE_THEMES: "線上主題",
@@ -549,6 +561,7 @@ const zhTW: TranslationObject = {
             THEME_LINKS: "主題鏈接"
         },
         UPDATER: {
+            SIDEBAR: "更新程序",
             TITLE: "更新程序",
             UPDATER_SETTINGS: "更新程序設定",
             AUTO_UPDATE: "自動更新",
@@ -574,6 +587,7 @@ const zhTW: TranslationObject = {
             LOADING: "加載中..."
         },
         PLUGINS: {
+            SIDEBAR: "插件",
             TITLE: "插件",
             SEARCH: "搜尋插件...",
             DISCORD: "Discord 插件",
@@ -805,6 +819,8 @@ const zhTW: TranslationObject = {
 // 简体中文
 const zhCN: TranslationObject = {
     SETTINGS: {
+        SIDEBAR_HEADER: "Vencord",
+        SIDEBAR: "Vencord",
         VENCORD_SETTINGS: "Vencord 设置",
         LANGUAGE: "语言",
         LANGUAGE_DESCRIPTION: "选择 Vencord 界面的语言",
@@ -855,6 +871,7 @@ const zhCN: TranslationObject = {
             DISABLE_MIN_SIZE_NOTE: "需要完全重启"
         },
         BACKUP_RESTORE: {
+            SIDEBAR: "备份与恢复",
             TITLE: "备份与恢复",
             WARNING: "警告",
             WARNING_MESSAGE: "导入设置文件将覆盖您当前的设置。",
@@ -867,6 +884,7 @@ const zhCN: TranslationObject = {
             EXPORT_BUTTON: "导出设置"
         },
         CLOUD: {
+            SIDEBAR: "云",
             TITLE: "Vencord 云",
             SETTINGS_TITLE: "云设置",
             DESCRIPTION: "Vencord 配有云集成功能，可提供跨设备设置同步等功能。它尊重您的隐私，且源代码采用 AGPL 3.0 许可，因此您可以自行托管。",
@@ -916,6 +934,7 @@ const zhCN: TranslationObject = {
             VIEW_LOG: "查看通知日志"
         },
         THEMES: {
+            SIDEBAR: "主题",
             TITLE: "主题",
             LOCAL_THEMES: "本地主题",
             ONLINE_THEMES: "在线主题",
@@ -944,6 +963,7 @@ const zhCN: TranslationObject = {
             THEME_LINKS: "主题链接"
         },
         UPDATER: {
+            SIDEBAR: "更新程序",
             TITLE: "更新程序",
             UPDATER_SETTINGS: "更新程序设置",
             AUTO_UPDATE: "自动更新",
@@ -969,6 +989,7 @@ const zhCN: TranslationObject = {
             LOADING: "加载中..."
         },
         PLUGINS: {
+            SIDEBAR: "插件",
             TITLE: "插件",
             SEARCH: "搜索插件...",
             DISCORD: "Discord 插件",

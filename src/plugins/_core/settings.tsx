@@ -16,6 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { i18n } from "@api/i18n";
 import { Settings } from "@api/Settings";
 import BackupAndRestoreTab from "@components/VencordSettings/BackupAndRestoreTab";
 import CloudTab from "@components/VencordSettings/CloudTab";
@@ -86,42 +87,42 @@ export default definePlugin({
         return [
             {
                 section: SectionTypes.HEADER,
-                label: "Vencord",
+                label: i18n("SETTINGS.SIDEBAR_HEADER"),
                 className: "vc-settings-header"
             },
             {
                 section: "VencordSettings",
-                label: "Vencord",
+                label: i18n("SETTINGS.SIDEBAR"),
                 element: VencordTab,
                 className: "vc-settings"
             },
             {
                 section: "VencordPlugins",
-                label: "Plugins",
+                label: i18n("SETTINGS.PLUGINS.SIDEBAR"),
                 element: PluginsTab,
                 className: "vc-plugins"
             },
             {
                 section: "VencordThemes",
-                label: "Themes",
+                label: i18n("SETTINGS.THEMES.SIDEBAR"),
                 element: ThemesTab,
                 className: "vc-themes"
             },
             !IS_UPDATER_DISABLED && {
                 section: "VencordUpdater",
-                label: "Updater",
+                label: i18n("SETTINGS.UPDATER.SIDEBAR"),
                 element: UpdaterTab,
                 className: "vc-updater"
             },
             {
                 section: "VencordCloud",
-                label: "Cloud",
+                label: i18n("SETTINGS.CLOUD.SIDEBAR"),
                 element: CloudTab,
                 className: "vc-cloud"
             },
             {
                 section: "VencordSettingsSync",
-                label: "Backup & Restore",
+                label: i18n("SETTINGS.BACKUP_RESTORE.SIDEBAR"),
                 element: BackupAndRestoreTab,
                 className: "vc-backup-restore"
             },
