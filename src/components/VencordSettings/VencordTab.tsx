@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { i18n } from "@api/i18n";
 import { openNotificationLogModal } from "@api/Notifications/notificationLog";
 import { useSettings } from "@api/Settings";
 import { classNameFactory } from "@api/Styles";
-import { i18n } from "@api/i18n";
 import DonateButton from "@components/DonateButton";
 import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { openPluginModal } from "@components/PluginSettings/PluginModal";
@@ -205,7 +205,8 @@ function VencordSettings() {
                 <Select
                     options={[
                         { label: "English", value: "en-US" },
-                        { label: "繁體中文", value: "zh-TW" }
+                        { label: "繁體中文", value: "zh-TW" },
+                        { label: "简体中文", value: "zh-CN" }
                     ]}
                     closeOnSelect={true}
                     select={v => { settings.language = v; }}
